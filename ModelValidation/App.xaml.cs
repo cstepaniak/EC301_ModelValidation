@@ -5,13 +5,28 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using VMS.TPS.Common.Model.API;
 
+[assembly:ESAPIScript(IsWriteable = true)]  // we need this for a writeable script
 namespace ModelValidation
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App: Application
+    public partial class App: System.Windows.Application
     {
+        private VMS.TPS.Common.Model.API.Application _app;
+
+        private void Application_Startup(object sender, StartupEventArgs e) {
+            try {
+                using (_app = VMS.TPS.Common.Model.API.Application.CreateApplication()) {
+
+                }
+            } catch (ApplicationException ex) {
+                // give the exception to the user somehow (log file, messagebox, etc)
+                _app.ClosePatient();  //this is like closing the patient in Eclipse
+                _app.Dispose();  //This is like closing Eclipse
+            }
+        }
     }
 }
