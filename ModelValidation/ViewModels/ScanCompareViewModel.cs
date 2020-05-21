@@ -91,7 +91,7 @@ namespace ModelValidation.ViewModels
                             //check the profile point to make sure a point exists in the doseprofile.
                             IEnumerable<ProfilePoint> pp_check = ds.axisDir == "X" ?
                                 dp.Where(x => x.Position.x >= tdd.Item1) :
-                                dp.Where(x => x.Position.y >= tdd.Item1);
+                                dp.Where(x => x.Position.y+200 >= tdd.Item1);
                             ProfilePoint pp;
                             //if there is not profile point, then you cannot do that gamma analysis.
                             if (pp_check.Count() == 0) { break; } else { pp = pp_check.First(); }//but if there is a profile point, take the first.
