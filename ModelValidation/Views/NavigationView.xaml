@@ -10,23 +10,37 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <TextBlock FontWeight="Bold" Text="Patient: "/>
-        <TextBox Width="150" Grid.Column="1" Text="{Binding PatientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10"/>
-        <Button Content="Open Patient" Grid.Column="2" Command="{Binding OpenPatientCommand}" Margin="10" Background="Yellow" Foreground="Black"/>
-        <StackPanel Grid.Row="1">
-            <TextBlock FontWeight="Bold" Text="Courses: " />
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <TextBlock FontWeight="Bold" Text="Patient ID: "/>
+            <TextBox Height="22" Width="150" Grid.Column="1" Text="{Binding PatientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10">
+                <TextBox.InputBindings>
+                    <KeyBinding 
+                        Key="Enter"
+                        Command="{Binding OpenPatientCommand}"/>
+                </TextBox.InputBindings>
+            </TextBox>
+        </StackPanel>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding PatientName, UpdateSourceTrigger=PropertyChanged}" Margin="10" 
+                   VerticalAlignment="Center" 
+                   FontWeight="Bold" 
+                   FontSize="20" 
+                   Foreground="Black"/>
+        <StackPanel Grid.Row="1" Grid.Column="0">
+            <TextBlock FontWeight="Bold" Text="Course: " />
             <ComboBox Width="150" Margin="10" ItemsSource="{Binding Courses}" DisplayMemberPath="Id" SelectedItem="{Binding SelectedCourse}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock FontWeight="Bold" Text="Plans: " />
+            <TextBlock FontWeight="Bold" Text="Plan: " />
             <ComboBox Width="150" Margin="10" ItemsSource="{Binding Plans}" DisplayMemberPath="Id" SelectedItem="{Binding SelectedPlan}"/>
         </StackPanel>
-        <Button Grid.Row="1" Grid.Column="2" Content="Generate Plan" Command="{Binding GeneratePlanCommand}" Height="20" Margin="10" Background="Yellow" Foreground="Black"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="Generate New Plan" Command="{Binding GeneratePlanCommand}" Height="24" Margin="10" Background="Yellow" Foreground="Black" VerticalAlignment="Bottom"/>
     </Grid>
+    <!--<Button Content="Open Patient" Grid.Column="2" Command="{Binding OpenPatientCommand}" Margin="10" Background="Yellow" Foreground="Black"/> -->
 </UserControl>

@@ -22,6 +22,21 @@ namespace ModelValidation.ViewModels
                 OpenPatientCommand.RaiseCanExecuteChanged(); //Fires CanOpenPatient()
             }
         }
+
+        private string patientName;
+        public string PatientName {
+            get {
+                if (CurrentPatient == null) {
+                    return "No Patient Selected";
+                } else {
+                    return CurrentPatient.Name;
+                }
+            }
+            set {
+                SetProperty(ref patientName, value);
+            }
+        }
+
         private Course selectedCourse;
         public Course SelectedCourse {
             get { return selectedCourse; }
@@ -74,7 +89,7 @@ namespace ModelValidation.ViewModels
         }
 
         private void OnGeneratePlan() {
-            // This will create a bunch of beams on a 40x40 cm box phantom, with user orign in the exact center (as well as the DICOM origin)
+            // This will create a bunch of beams on a 60x60 cm box phantom, with user orign in the exact center (as well as the DICOM origin)
             //Patient Coordinate system:
             // X increases toward patient left
             // y increases toward patient Posterior
@@ -86,6 +101,7 @@ namespace ModelValidation.ViewModels
             string _machineId = ConfigurationManager.AppSettings["machine"];
             CurrentPatient.BeginModifications();
             var autoCourse = CurrentPatient.AddCourse();
+
             if (CurrentPatient.StructureSets.Count() > 0) {
                 var autoPlan = autoCourse.AddExternalPlanSetup(CurrentPatient.StructureSets.FirstOrDefault());
                 ExternalBeamMachineParameters machineParameters = new ExternalBeamMachineParameters(
@@ -94,7 +110,7 @@ namespace ModelValidation.ViewModels
                     600,
                     "STATIC",
                     null);
-                double[] fs = new double[] { 40.0, 60.0, 80.0, 100.0, 200.0 };
+                double[] fs = new double[] { 40.0, 60.0, 80.0, 100.0, 200.0 };  //all units are in mm
                 foreach (var field in fs) {
                     double jaw = field / 2.0;
                     // add beams (in IEC 1217 DICOM standard)
@@ -125,6 +141,7 @@ namespace ModelValidation.ViewModels
             CurrentPatient = _app.OpenPatientById(PatientId);
             Courses.Clear();
             if (CurrentPatient != null) {
+                PatientName = CurrentPatient.Name;
                 foreach (var course in CurrentPatient.Courses) {
                     Courses.Add(course);
                 }
